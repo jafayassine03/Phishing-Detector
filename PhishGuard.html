@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhishGuard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #0f172a;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 850px;
+      background: #111827;
+      border-radius: 14px;
+      padding: 25px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      color: #38bdf8;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #cbd5e1;
+      margin-bottom: 25px;
+      font-size: 15px;
+    }
+
+    .email-box {
+      background: #1e293b;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-left: 5px solid #38bdf8;
+    }
+
+    .email-header {
+      margin-bottom: 15px;
+      line-height: 1.7;
+      color: #e2e8f0;
+    }
+
+    .email-content {
+      background: #0f172a;
+      padding: 15px;
+      border-radius: 8px;
+      line-height: 1.6;
+      color: #f8fafc;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: bold;
+    }
+
+    .safe {
+      background: #22c55e;
+      color: white;
+    }
+
+    .phishing {
+      background: #ef4444;
+      color: white;
+    }
+
+    button:hover {
+      opacity: 0.9;
+      transform: scale(1.02);
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      display: none;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .correct {
+      background: rgba(34,197,94,0.2);
+      border: 1px solid #22c55e;
+      color: #bbf7d0;
+    }
+
+    .wrong {
+      background: rgba(239,68,68,0.2);
+      border: 1px solid #ef4444;
+      color: #fecaca;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      background: #1e293b;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    .stat-box {
+      text-align: center;
+      flex: 1;
+    }
+
+    .stat-box h2 {
+      color: #38bdf8;
+      margin-bottom: 5px;
+    }
+
+    .next-btn {
+      margin-top: 20px;
+      width: 100%;
+      background: #38bdf8;
+      color: black;
+      display: none;
+    }
+
+    @media(max-width: 600px) {
+      .buttons {
+        flex-direction: column;
+      }
+
+      .stats {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>PhishGuard</h1>
+    <p class="subtitle">Test your ability to detect phishing emails and improve your cyber security awareness.</p>
+
+    <div class="email-box">
+      <div class="email-header" id="emailHeader"></div>
+      <div class="email-content" id="emailContent"></div>
+    </div>
+
+    <div class="buttons">
+      <button class="safe" onclick="checkAnswer('safe')">Safe</button>
+      <button class="phishing" onclick="checkAnswer('phishing')">Phishing</button>
+    </div>
+
+    <div class="result" id="resultBox"></div>
+
+    <button class="next-btn" id="nextBtn" onclick="nextEmail()">Next Email</button>
+
+    <div class="stats">
+      <div class="stat-box">
+        <h2 id="score">0</h2>
+        <p>Score</p>
+      </div>
+
+      <div class="stat-box">
+        <h2 id="correct">0</h2>
+        <p>Correct</p>
+      </div>
+
+      <div class="stat-box">
+        <h2 id="wrong">0</h2>
+        <p>Wrong</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const emails = [
+      {
+        from: "security@paypal-alerts.com",
+        subject: "Urgent Account Verification",
+        content: "Your PayPal account has been limited due to suspicious activity. Verify your account immediately by clicking the secure link below.",
+        type: "phishing",
+        reason: "The email creates urgency and uses a suspicious sender domain."
+      },
+      {
+        from: "orders@amazon.com",
+        subject: "Your package has shipped",
+        content: "Your recent Amazon order has been shipped and will arrive tomorrow. Track your package using the Amazon app.",
+        type: "safe",
+        reason: "The sender and message content look legitimate without suspicious pressure tactics."
+      },
+      {
+        from: "support@netfIix-help.com",
+        subject: "Payment Failed",
+        content: "Your Netflix subscription has been suspended. Update your payment details within 24 hours to avoid account deletion.",
+        type: "phishing",
+        reason: "The domain uses a fake spelling trick and pushes urgent action."
+      },
+      {
+        from: "no-reply@github.com",
+        subject: "New sign-in from Chrome",
+        content: "We noticed a new sign-in to your GitHub account from Chrome on Windows. If this was not you, reset your password immediately.",
+        type: "safe",
+        reason: "This is a normal security alert from a trusted service."
+      }
+    ];
+
+    let current = 0;
+    let score = 0;
+    let correct = 0;
+    let wrong = 0;
+
+    const header = document.getElementById('emailHeader');
+    const content = document.getElementById('emailContent');
+    const resultBox = document.getElementById('resultBox');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function loadEmail() {
+      const email = emails[current];
+
+      header.innerHTML = `
+        <strong>From:</strong> ${email.from}<br>
+        <strong>Subject:</strong> ${email.subject}
+      `;
+
+      content.textContent = email.content;
+
+      resultBox.style.display = 'none';
+      nextBtn.style.display = 'none';
+    }
+
+    function checkAnswer(answer) {
+      const email = emails[current];
+
+      resultBox.style.display = 'block';
+      nextBtn.style.display = 'block';
+
+      if(answer === email.type) {
+        score += 10;
+        correct++;
+
+        resultBox.className = 'result correct';
+        resultBox.innerHTML = `
+          <strong>Correct!</strong><br>
+          ${email.reason}
+        `;
+      } else {
+        wrong++;
+
+        resultBox.className = 'result wrong';
+        resultBox.innerHTML = `
+          <strong>Wrong Answer.</strong><br>
+          ${email.reason}
+        `;
+      }
+
+      document.getElementById('score').textContent = score;
+      document.getElementById('correct').textContent = correct;
+      document.getElementById('wrong').textContent = wrong;
+    }
+
+    function nextEmail() {
+      current++;
+
+      if(current >= emails.length) {
+        header.innerHTML = 'Training Completed';
+        content.innerHTML = `Final Score: <strong>${score}</strong><br><br>You finished the phishing awareness challenge.`;
+
+        document.querySelector('.buttons').style.display = 'none';
+        resultBox.style.display = 'none';
+        nextBtn.style.display = 'none';
+        return;
+      }
+
+      loadEmail();
+    }
+
+    loadEmail();
+  </script>
+
+</body>
+</html>
