@@ -1,185 +1,320 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PhishGuard</title>
-   <link rel="stylesheet" href="phishguard.css">
+
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
     }
 
-    body {
-      background: #0f172a;
-      color: white;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
+    body{
+      background:#0f172a;
+      color:white;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
     }
 
-    .container {
-      width: 100%;
-      max-width: 850px;
-      background: #111827;
-      border-radius: 14px;
-      padding: 25px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    .container{
+      width:100%;
+      max-width:900px;
+      background:#111827;
+      border-radius:14px;
+      padding:25px;
+      box-shadow:0 0 20px rgba(0,0,0,0.4);
     }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 10px;
-      color: #38bdf8;
+    h1{
+      text-align:center;
+      margin-bottom:10px;
+      color:#38bdf8;
+      font-size:38px;
     }
 
-    .subtitle {
-      text-align: center;
-      color: #cbd5e1;
-      margin-bottom: 25px;
-      font-size: 15px;
+    .subtitle{
+      text-align:center;
+      color:#cbd5e1;
+      margin-bottom:25px;
+      font-size:15px;
     }
 
-    .email-box {
-      background: #1e293b;
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-left: 5px solid #38bdf8;
+    .top-bar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:20px;
+      gap:15px;
+      flex-wrap:wrap;
     }
 
-    .email-header {
-      margin-bottom: 15px;
-      line-height: 1.7;
-      color: #e2e8f0;
+    .difficulty{
+      background:#1e293b;
+      padding:10px 15px;
+      border-radius:8px;
+      color:#e2e8f0;
     }
 
-    .email-content {
-      background: #0f172a;
-      padding: 15px;
-      border-radius: 8px;
-      line-height: 1.6;
-      color: #f8fafc;
+    select{
+      padding:8px;
+      border:none;
+      border-radius:6px;
+      background:#0f172a;
+      color:white;
+      outline:none;
     }
 
-    .buttons {
-      display: flex;
-      gap: 15px;
-      margin-top: 20px;
+    .timer{
+      background:#1e293b;
+      padding:10px 20px;
+      border-radius:8px;
+      color:#38bdf8;
+      font-weight:bold;
     }
 
-    button {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s;
-      font-weight: bold;
+    .email-box{
+      background:#1e293b;
+      border-radius:10px;
+      padding:20px;
+      margin-bottom:20px;
+      border-left:5px solid #38bdf8;
+      animation:fadeIn 0.4s ease;
     }
 
-    .safe {
-      background: #22c55e;
-      color: white;
+    .email-header{
+      margin-bottom:15px;
+      line-height:1.7;
+      color:#e2e8f0;
     }
 
-    .phishing {
-      background: #ef4444;
-      color: white;
+    .email-content{
+      background:#0f172a;
+      padding:15px;
+      border-radius:8px;
+      line-height:1.6;
+      color:#f8fafc;
     }
 
-    button:hover {
-      opacity: 0.9;
-      transform: scale(1.02);
+    .buttons{
+      display:flex;
+      gap:15px;
+      margin-top:20px;
     }
 
-    .result {
-      margin-top: 20px;
-      padding: 15px;
-      border-radius: 8px;
-      display: none;
-      font-size: 15px;
-      line-height: 1.5;
+    button{
+      flex:1;
+      padding:12px;
+      border:none;
+      border-radius:8px;
+      font-size:16px;
+      cursor:pointer;
+      transition:0.3s;
+      font-weight:bold;
     }
 
-    .correct {
-      background: rgba(34,197,94,0.2);
-      border: 1px solid #22c55e;
-      color: #bbf7d0;
+    .safe{
+      background:#22c55e;
+      color:white;
     }
 
-    .wrong {
-      background: rgba(239,68,68,0.2);
-      border: 1px solid #ef4444;
-      color: #fecaca;
+    .phishing{
+      background:#ef4444;
+      color:white;
     }
 
-    .stats {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 20px;
-      background: #1e293b;
-      padding: 15px;
-      border-radius: 10px;
+    button:hover{
+      opacity:0.9;
+      transform:scale(1.02);
     }
 
-    .stat-box {
-      text-align: center;
-      flex: 1;
+    .result{
+      margin-top:20px;
+      padding:15px;
+      border-radius:8px;
+      display:none;
+      font-size:15px;
+      line-height:1.5;
     }
 
-    .stat-box h2 {
-      color: #38bdf8;
-      margin-bottom: 5px;
+    .correct{
+      background:rgba(34,197,94,0.2);
+      border:1px solid #22c55e;
+      color:#bbf7d0;
     }
 
-    .next-btn {
-      margin-top: 20px;
-      width: 100%;
-      background: #38bdf8;
-      color: black;
-      display: none;
+    .wrong{
+      background:rgba(239,68,68,0.2);
+      border:1px solid #ef4444;
+      color:#fecaca;
     }
 
-    @media(max-width: 600px) {
-      .buttons {
-        flex-direction: column;
+    .next-btn{
+      margin-top:20px;
+      width:100%;
+      background:#38bdf8;
+      color:black;
+      display:none;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:15px;
+      margin-top:25px;
+    }
+
+    .stat-box{
+      background:#1e293b;
+      padding:18px;
+      border-radius:10px;
+      text-align:center;
+    }
+
+    .stat-box h2{
+      color:#38bdf8;
+      margin-bottom:5px;
+      font-size:28px;
+    }
+
+    .progress-bar{
+      width:100%;
+      height:12px;
+      background:#1e293b;
+      border-radius:20px;
+      overflow:hidden;
+      margin-top:20px;
+    }
+
+    .progress{
+      height:100%;
+      width:0%;
+      background:#38bdf8;
+      transition:0.4s;
+    }
+
+    .badge{
+      margin-top:20px;
+      text-align:center;
+      font-size:18px;
+      color:#facc15;
+      display:none;
+    }
+
+    .restart-btn{
+      margin-top:15px;
+      width:100%;
+      background:#facc15;
+      color:black;
+      display:none;
+    }
+
+    @keyframes fadeIn{
+      from{
+        opacity:0;
+        transform:translateY(10px);
       }
 
-      .stats {
-        flex-direction: column;
-        gap: 15px;
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    @media(max-width:700px){
+      .buttons{
+        flex-direction:column;
+      }
+
+      .stats{
+        grid-template-columns:1fr 1fr;
+      }
+
+      .top-bar{
+        flex-direction:column;
+      }
+    }
+
+    @media(max-width:500px){
+      .stats{
+        grid-template-columns:1fr;
       }
     }
   </style>
 </head>
+
 <body>
 
   <div class="container">
+
     <h1>PhishGuard</h1>
-    <p class="subtitle">Test your ability to detect phishing emails and improve your cyber security awareness.</p>
+
+    <p class="subtitle">
+      Train yourself to detect phishing emails and improve your cyber security awareness.
+    </p>
+
+    <div class="top-bar">
+
+      <div class="difficulty">
+        Difficulty:
+        <select id="difficultySelect">
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+      </div>
+
+      <div class="timer">
+        Time Left:
+        <span id="timer">15</span>s
+      </div>
+
+    </div>
 
     <div class="email-box">
+
       <div class="email-header" id="emailHeader"></div>
+
       <div class="email-content" id="emailContent"></div>
+
     </div>
 
     <div class="buttons">
-      <button class="safe" onclick="checkAnswer('safe')">Safe</button>
-      <button class="phishing" onclick="checkAnswer('phishing')">Phishing</button>
+
+      <button class="safe" onclick="checkAnswer('safe')">
+        Safe
+      </button>
+
+      <button class="phishing" onclick="checkAnswer('phishing')">
+        Phishing
+      </button>
+
     </div>
 
     <div class="result" id="resultBox"></div>
 
-    <button class="next-btn" id="nextBtn" onclick="nextEmail()">Next Email</button>
+    <button class="next-btn" id="nextBtn" onclick="nextEmail()">
+      Next Email
+    </button>
+
+    <button class="restart-btn" id="restartBtn" onclick="restartGame()">
+      Restart Training
+    </button>
+
+    <div class="progress-bar">
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <div class="badge" id="badge"></div>
 
     <div class="stats">
+
       <div class="stat-box">
         <h2 id="score">0</h2>
         <p>Score</p>
@@ -194,52 +329,131 @@
         <h2 id="wrong">0</h2>
         <p>Wrong</p>
       </div>
+
+      <div class="stat-box">
+        <h2 id="streak">0</h2>
+        <p>Streak</p>
+      </div>
+
     </div>
+
   </div>
 
   <script>
-    const emails = [
-      {
-        from: "security@paypal-alerts.com",
-        subject: "Urgent Account Verification",
-        content: "Your PayPal account has been limited due to suspicious activity. Verify your account immediately by clicking the secure link below.",
-        type: "phishing",
-        reason: "The email creates urgency and uses a suspicious sender domain."
-      },
-      {
-        from: "orders@amazon.com",
-        subject: "Your package has shipped",
-        content: "Your recent Amazon order has been shipped and will arrive tomorrow. Track your package using the Amazon app.",
-        type: "safe",
-        reason: "The sender and message content look legitimate without suspicious pressure tactics."
-      },
-      {
-        from: "support@netfIix-help.com",
-        subject: "Payment Failed",
-        content: "Your Netflix subscription has been suspended. Update your payment details within 24 hours to avoid account deletion.",
-        type: "phishing",
-        reason: "The domain uses a fake spelling trick and pushes urgent action."
-      },
-      {
-        from: "no-reply@github.com",
-        subject: "New sign-in from Chrome",
-        content: "We noticed a new sign-in to your GitHub account from Chrome on Windows. If this was not you, reset your password immediately.",
-        type: "safe",
-        reason: "This is a normal security alert from a trusted service."
-      }
-    ];
+
+    const allEmails = {
+      easy: [
+        {
+          from:"security@paypal-alerts.com",
+          subject:"Urgent Account Verification",
+          content:"Your PayPal account has been limited due to suspicious activity. Verify immediately using the secure link below.",
+          type:"phishing",
+          reason:"Suspicious sender and urgency tactics."
+        },
+
+        {
+          from:"orders@amazon.com",
+          subject:"Your package has shipped",
+          content:"Your recent Amazon order has been shipped and will arrive tomorrow.",
+          type:"safe",
+          reason:"Legitimate sender and normal message."
+        }
+      ],
+
+      medium: [
+        {
+          from:"support@netfIix-help.com",
+          subject:"Payment Failed",
+          content:"Update your payment details within 24 hours to avoid account deletion.",
+          type:"phishing",
+          reason:"Fake domain uses spelling trick."
+        },
+
+        {
+          from:"no-reply@github.com",
+          subject:"New sign-in from Chrome",
+          content:"We noticed a new sign-in to your GitHub account from Chrome on Windows.",
+          type:"safe",
+          reason:"Trusted service security notification."
+        }
+      ],
+
+      hard: [
+        {
+          from:"microsoft-support@security-checkup.co",
+          subject:"Password Expiring Today",
+          content:"Your Microsoft password expires today. Click below to keep your access.",
+          type:"phishing",
+          reason:"Fake support domain pretending to be Microsoft."
+        },
+
+        {
+          from:"team@linkedin.com",
+          subject:"New login to your account",
+          content:"A login to your LinkedIn account was detected from California.",
+          type:"safe",
+          reason:"Looks like a legitimate login notification."
+        }
+      ]
+    };
+
+    let difficulty = "easy";
+    let emails = [...allEmails[difficulty]];
 
     let current = 0;
     let score = 0;
     let correct = 0;
     let wrong = 0;
+    let streak = 0;
 
-    const header = document.getElementById('emailHeader');
-    const content = document.getElementById('emailContent');
-    const resultBox = document.getElementById('resultBox');
-    const nextBtn = document.getElementById('nextBtn');
+    let timer = 15;
+    let timerInterval;
 
-    function loadEmail() {
+    const header = document.getElementById("emailHeader");
+    const content = document.getElementById("emailContent");
+    const resultBox = document.getElementById("resultBox");
+    const nextBtn = document.getElementById("nextBtn");
+    const restartBtn = document.getElementById("restartBtn");
+    const timerText = document.getElementById("timer");
+    const progress = document.getElementById("progress");
+    const badge = document.getElementById("badge");
+
+    document
+      .getElementById("difficultySelect")
+      .addEventListener("change", function () {
+
+        difficulty = this.value;
+        emails = [...allEmails[difficulty]];
+        restartGame();
+
+      });
+
+    function startTimer(){
+
+      clearInterval(timerInterval);
+
+      timer = 15;
+      timerText.textContent = timer;
+
+      timerInterval = setInterval(() => {
+
+        timer--;
+        timerText.textContent = timer;
+
+        if(timer <= 0){
+
+          clearInterval(timerInterval);
+
+          checkAnswer("timeout");
+
+        }
+
+      },1000);
+
+    }
+
+    function loadEmail(){
+
       const email = emails[current];
 
       header.innerHTML = `
@@ -249,57 +463,142 @@
 
       content.textContent = email.content;
 
-      resultBox.style.display = 'none';
-      nextBtn.style.display = 'none';
+      resultBox.style.display = "none";
+      nextBtn.style.display = "none";
+
+      startTimer();
+
+      updateProgress();
+
     }
 
-    function checkAnswer(answer) {
+    function checkAnswer(answer){
+
+      clearInterval(timerInterval);
+
       const email = emails[current];
 
-      resultBox.style.display = 'block';
-      nextBtn.style.display = 'block';
+      resultBox.style.display = "block";
+      nextBtn.style.display = "block";
 
-      if(answer === email.type) {
+      document.querySelector(".safe").disabled = true;
+      document.querySelector(".phishing").disabled = true;
+
+      if(answer === email.type){
+
         score += 10;
         correct++;
+        streak++;
 
-        resultBox.className = 'result correct';
+        resultBox.className = "result correct";
+
         resultBox.innerHTML = `
-          <strong>Correct!</strong><br>
+          <strong>Correct!</strong><br><br>
           ${email.reason}
         `;
+
       } else {
-        wrong++;
 
-        resultBox.className = 'result wrong';
+        wrong++;
+        streak = 0;
+
+        resultBox.className = "result wrong";
+
         resultBox.innerHTML = `
-          <strong>Wrong Answer.</strong><br>
+          <strong>Wrong Answer.</strong><br><br>
           ${email.reason}
         `;
+
       }
 
-      document.getElementById('score').textContent = score;
-      document.getElementById('correct').textContent = correct;
-      document.getElementById('wrong').textContent = wrong;
+      if(streak >= 3){
+
+        badge.style.display = "block";
+        badge.textContent = "🔥 Cyber Security Expert Streak!";
+      }
+
+      updateStats();
+
     }
 
-    function nextEmail() {
+    function nextEmail(){
+
       current++;
 
-      if(current >= emails.length) {
-        header.innerHTML = 'Training Completed';
-        content.innerHTML = `Final Score: <strong>${score}</strong><br><br>You finished the phishing awareness challenge.`;
+      document.querySelector(".safe").disabled = false;
+      document.querySelector(".phishing").disabled = false;
 
-        document.querySelector('.buttons').style.display = 'none';
-        resultBox.style.display = 'none';
-        nextBtn.style.display = 'none';
+      if(current >= emails.length){
+
+        endGame();
         return;
+
       }
 
       loadEmail();
+
+    }
+
+    function updateStats(){
+
+      document.getElementById("score").textContent = score;
+      document.getElementById("correct").textContent = correct;
+      document.getElementById("wrong").textContent = wrong;
+      document.getElementById("streak").textContent = streak;
+
+    }
+
+    function updateProgress(){
+
+      const percent = (current / emails.length) * 100;
+      progress.style.width = percent + "%";
+
+    }
+
+    function endGame(){
+
+      header.innerHTML = "Training Completed";
+
+      content.innerHTML = `
+        Final Score: <strong>${score}</strong><br><br>
+        You completed the phishing awareness training.
+      `;
+
+      document.querySelector(".buttons").style.display = "none";
+
+      resultBox.style.display = "none";
+      nextBtn.style.display = "none";
+
+      restartBtn.style.display = "block";
+
+      progress.style.width = "100%";
+
+    }
+
+    function restartGame(){
+
+      current = 0;
+      score = 0;
+      correct = 0;
+      wrong = 0;
+      streak = 0;
+
+      badge.style.display = "none";
+
+      updateStats();
+
+      document.querySelector(".buttons").style.display = "flex";
+
+      restartBtn.style.display = "none";
+
+      emails = [...allEmails[difficulty]];
+
+      loadEmail();
+
     }
 
     loadEmail();
+
   </script>
 
 </body>
