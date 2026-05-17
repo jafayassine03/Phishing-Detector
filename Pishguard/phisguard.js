@@ -156,6 +156,8 @@ function checkAnswer(answer) {
   if (streak >= 3) {
     badge.style.display = "block";
     badge.textContent = "🔥 Cyber Security Expert Streak!";
+  } else {
+    badge.style.display = "none";
   }
 
   updateStats();
@@ -222,4 +224,22 @@ function restartGame() {
   loadEmail();
 }
 
-loadEmail();
+function toggleTheme() {
+  document.body.classList.toggle("light");
+
+  if (document.body.classList.contains("light")) {
+    localStorage.setItem("theme", "light");
+  } else {
+    localStorage.setItem("theme", "dark");
+  }
+}
+
+window.onload = function () {
+  const savedTheme = localStorage.getItem("theme");
+
+  if (savedTheme === "light") {
+    document.body.classList.add("light");
+  }
+
+  loadEmail();
+};
