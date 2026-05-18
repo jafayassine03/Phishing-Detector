@@ -69,28 +69,44 @@ body.light .top-bar {
   background: #e2e8f0;
 }
 
-.level {
-  color: #facc15;
+.difficulty {
   font-weight: bold;
 }
 
-.progress-container {
-  width: 180px;
-  height: 10px;
+#difficultySelect {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: none;
+  background: #38bdf8;
+  color: black;
+  font-weight: bold;
+  margin-left: 8px;
+}
+
+.timer {
+  font-weight: bold;
+  color: #facc15;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 12px;
   background: #334155;
   border-radius: 20px;
   overflow: hidden;
+  margin-top: 25px;
 }
 
-body.light .progress-container {
+body.light .progress-bar {
   background: #cbd5e1;
 }
 
 .progress {
-  width: 60%;
+  width: 0%;
   height: 100%;
   background: #38bdf8;
   border-radius: 20px;
+  transition: 0.4s;
 }
 
 .email-box {
@@ -136,22 +152,6 @@ body.light .email-content {
   border: 1px solid #cbd5e1;
 }
 
-.warning-tags {
-  margin-top: 15px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.tag {
-  background: rgba(239,68,68,0.2);
-  color: #fecaca;
-  border: 1px solid #ef4444;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 13px;
-}
-
 .buttons {
   display: flex;
   gap: 15px;
@@ -179,6 +179,11 @@ button {
   color: white;
 }
 
+.hint-btn {
+  background: #f59e0b;
+  color: white;
+}
+
 .theme-btn {
   background: #38bdf8;
   color: black;
@@ -193,21 +198,26 @@ button:hover {
   margin-top: 20px;
   padding: 15px;
   border-radius: 10px;
-  display: none;
   font-size: 15px;
   line-height: 1.6;
+  text-align: center;
 }
 
-.correct {
-  background: rgba(34,197,94,0.2);
-  border: 1px solid #22c55e;
-  color: #bbf7d0;
+.hint-box {
+  margin-top: 15px;
+  padding: 15px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.08);
+  text-align: center;
+  color: #facc15;
 }
 
-.wrong {
-  background: rgba(239,68,68,0.2);
-  border: 1px solid #ef4444;
-  color: #fecaca;
+.badge {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #38bdf8;
 }
 
 .stats {
@@ -261,7 +271,6 @@ body.light .stat-box p {
   width: 100%;
   background: #38bdf8;
   color: black;
-  display: none;
 }
 
 .restart-btn {
@@ -269,19 +278,6 @@ body.light .stat-box p {
   width: 100%;
   background: #a855f7;
   color: white;
-  display: none;
-}
-
-.footer {
-  margin-top: 25px;
-  text-align: center;
-  color: #94a3b8;
-  font-size: 13px;
-}
-
-.footer span {
-  color: #38bdf8;
-  font-weight: bold;
 }
 
 @keyframes fadeIn {
@@ -308,9 +304,5 @@ body.light .stat-box p {
   .top-bar {
     flex-direction: column;
     gap: 10px;
-  }
-
-  .progress-container {
-    width: 100%;
   }
 }
