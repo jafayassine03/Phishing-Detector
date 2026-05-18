@@ -5,7 +5,8 @@ const allEmails = {
       subject: "Urgent Account Verification",
       content: "Your PayPal account has been limited due to suspicious activity.",
       type: "phishing",
-      reason: "Suspicious sender and urgency tactics."
+      reason: "Suspicious sender and urgency tactics.",
+      hint: "Check the sender domain carefully."
     },
 
     {
@@ -13,7 +14,8 @@ const allEmails = {
       subject: "Your package has shipped",
       content: "Your recent Amazon order has been shipped and will arrive tomorrow.",
       type: "safe",
-      reason: "Legitimate sender and normal message."
+      reason: "Legitimate sender and normal message.",
+      hint: "Trusted company domain."
     }
   ],
 
@@ -23,7 +25,8 @@ const allEmails = {
       subject: "Payment Failed",
       content: "Update your payment details within 24 hours.",
       type: "phishing",
-      reason: "Fake domain uses spelling trick."
+      reason: "Fake domain uses spelling trick.",
+      hint: "Look closely at the spelling of Netflix."
     },
 
     {
@@ -31,7 +34,8 @@ const allEmails = {
       subject: "New sign-in from Chrome",
       content: "We noticed a new sign-in to your GitHub account.",
       type: "safe",
-      reason: "Trusted service security notification."
+      reason: "Trusted service security notification.",
+      hint: "Official GitHub domain."
     }
   ],
 
@@ -41,7 +45,8 @@ const allEmails = {
       subject: "Password Expiring Today",
       content: "Your Microsoft password expires today.",
       type: "phishing",
-      reason: "Fake support domain pretending to be Microsoft."
+      reason: "Fake support domain pretending to be Microsoft.",
+      hint: "Microsoft emails usually use microsoft.com."
     },
 
     {
@@ -49,7 +54,8 @@ const allEmails = {
       subject: "New login to your account",
       content: "A login to your LinkedIn account was detected.",
       type: "safe",
-      reason: "Legitimate login notification."
+      reason: "Legitimate login notification.",
+      hint: "The domain is authentic."
     }
   ]
 };
@@ -62,6 +68,7 @@ let score = 0;
 let correct = 0;
 let wrong = 0;
 let streak = 0;
+let highScore = localStorage.getItem("highScore") || 0;
 
 let timer = 15;
 let timerInterval;
@@ -74,6 +81,9 @@ const restartBtn = document.getElementById("restartBtn");
 const timerText = document.getElementById("timer");
 const progress = document.getElementById("progress");
 const badge = document.getElementById("badge");
+const hintBox = document.getElementById("hintBox");
+
+document.getElementById("highScore").textContent = highScore;
 
 document.getElementById("difficultySelect").addEventListener("change", function () {
   difficulty = this.value;
@@ -110,6 +120,7 @@ function loadEmail() {
 
   resultBox.style.display = "none";
   nextBtn.style.display = "none";
+  hintBox.innerHTML = "";
 
   document.querySelector(".safe").disabled = false;
   document.querySelector(".phishing").disabled = false;
@@ -153,6 +164,12 @@ function checkAnswer(answer) {
     `;
   }
 
+  if (score > highScore) {
+    highScore = score;
+    localStorage.setItem("highScore", highScore);
+    document.getElementById("highScore").textContent = highScore;
+  }
+
   if (streak >= 3) {
     badge.style.display = "block";
     badge.textContent = "🔥 Cyber Security Expert Streak!";
@@ -182,7 +199,7 @@ function updateStats() {
 }
 
 function updateProgress() {
-  const percent = (current / emails.length) * 100;
+  const percent = ((current + 1) / emails.length) * 100;
   progress.style.width = percent + "%";
 }
 
@@ -232,6 +249,11 @@ function toggleTheme() {
   } else {
     localStorage.setItem("theme", "dark");
   }
+}
+
+function showHint() {
+  const email = emails[current];
+  hintBox.innerHTML = email.hint;
 }
 
 window.onload = function () {
